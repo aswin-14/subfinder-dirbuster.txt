@@ -1,0 +1,7 @@
+subfinder -d grammarly.com -o subs.txt
+amass enum -d grammarly.com -o amass.txt
+cat subs.txt amass.txt | sort -u > final_subdomains.txt
+
+for sub in $(cat final_subdomains.txt); do
+    ffuf -u https://$sub/FUZZ -w /usr/share/wordlists/seclists/Discovery/Web-Content/common.txt -o $sub-dirs.txt
+done
